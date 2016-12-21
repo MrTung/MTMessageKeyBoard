@@ -6,7 +6,14 @@
 //  Copyright © 2016年 Mr.Tung. All rights reserved.
 //
 
+
+#define MTScreenW [UIScreen mainScreen].bounds.size.width
+
+#define MTScreenH [UIScreen mainScreen].bounds.size.height
+
 #import "ViewController.h"
+
+#import "MTInputToolbar.h"
 
 @interface ViewController ()
 
@@ -17,6 +24,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    MTInputToolbar *bar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 45 , MTScreenW, 45)];
+    bar.textViewMaxLine = 4;
+    [self.view addSubview:bar];
 }
 
 
