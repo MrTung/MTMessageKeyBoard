@@ -112,11 +112,15 @@
 
 -(void)setupSubviews
 {
+    UIView *line1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MTScreenW, 0.5)];
+    line1.backgroundColor =  [UIColor colorWithRed:220 / 255.0 green:220 / 255.0 blue:220 / 255.0 alpha:1];
+    [self addSubview:line1];
+    
     self.emojiFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 160, MTScreenW, 40)];
     self.emojiFooterView.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.emojiFooterView];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 160, MTScreenW, 0.5)];
-    line.backgroundColor = [UIColor lightGrayColor];
+    line.backgroundColor = [UIColor colorWithRed:220 / 255.0 green:220 / 255.0 blue:220 / 255.0 alpha:1];
     [self addSubview:line];
     
     self.sendButton = [[UIButton alloc] initWithFrame:CGRectMake(MTScreenW - kFootViewButtonWidth, 0, kFootViewButtonWidth, 40)];
@@ -148,7 +152,7 @@
     self.emojiTypeButton2.selected = NO;
 
     
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, MTScreenW, 130) collectionViewLayout:self.layout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame) + 5, MTScreenW, 130) collectionViewLayout:self.layout];
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.pagingEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithRed:243 / 255.0 green:243 / 255.0 blue:243 / 255.0 alpha:1];

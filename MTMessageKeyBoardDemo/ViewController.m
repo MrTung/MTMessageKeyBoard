@@ -25,7 +25,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    MTInputToolbar *bar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 45 , MTScreenW, 45)];
+    MTInputToolbar *bar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 50 , MTScreenW, 50)];
     bar.textViewMaxLine = 4;
     [self.view addSubview:bar];
 }

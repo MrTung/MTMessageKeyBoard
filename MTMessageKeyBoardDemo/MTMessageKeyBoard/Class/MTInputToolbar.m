@@ -6,9 +6,16 @@
 //  Copyright © 2016年 Mr.Tung. All rights reserved.
 //
 
+
+typedef enum {
+    InputToolBarStatusTypeDefault,
+    InputToolBarStatusTypeVoice,
+    InputToolBarStatusTypeEmoji,
+    InputToolBarStatusTypeMore,
+} InputToolBarStatusType;
+
 // 颜色
 #define MTColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
-
 
 #define MTScreenW [UIScreen mainScreen].bounds.size.width
 
@@ -16,16 +23,26 @@
 
 #define kCustomKeyboardHeight 200
 
+//按钮距离下边距离
+#define kButtonMargin 12
+//按钮宽高
+#define kButtonWH 30
+
 #import "MTInputToolbar.h"
 
 #import "UIView+Extension.h"
+#import "MBProgressHUD.h"
+#import "MTRecordHelper.h"
 
 #import "MTEmojiView.h"
 #import "MTMoreView.h"
 
 @interface MTInputToolbar()<UITextViewDelegate,EmojiViewDelegate>
 {
+    //录音开始的时间
+    CFAbsoluteTime recordStarttime;
     
+    MBProgressHUD *hud;
 }
 
 /***键盘高度***/
@@ -62,6 +79,8 @@
 
 @property (nonatomic,strong)UIButton *voiceView;
 
+@property (nonatomic,strong)NSMutableArray *buttonArr;
+
 
 @end
 @implementation MTInputToolbar
@@ -77,7 +96,7 @@
 - (MTMoreView *)moreView
 {
     if (!_moreView) {
-        self.moreView = [[MTMoreView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
+        _moreView = [[MTMoreView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
         _keyboardHeight = kCustomKeyboardHeight;
     }
     return _moreView;
@@ -86,8 +105,8 @@
 - (MTEmojiView *)emojiView
 {
     if (!_emojiView) {
-        self.emojiView = [[MTEmojiView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
-        self.emojiView.delegate = self;
+        _emojiView = [[MTEmojiView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
+        _emojiView.delegate = self;
         _keyboardHeight = kCustomKeyboardHeight;
     }
     return _emojiView;
@@ -96,17 +115,25 @@
 - (UIButton *)voiceView
 {
     if (!_voiceView) {
-        self.voiceView = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, 7, MTScreenW - 115, 32)];
-        self.voiceView.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-        [self.voiceView setTitle:@"按住说话" forState:UIControlStateNormal];
-        [self.voiceView setTitle:@"松开结束" forState:UIControlStateFocused];
-        [self.voiceView setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
-        [self.voiceView setTitleColor:[UIColor darkGrayColor] forState:UIControlStateFocused];
+        _voiceView = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, 7, MTScreenW - 115, 34)];
+        _voiceView.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+        [_voiceView setTitle:@"按住 说话" forState:UIControlStateNormal];
+        [_voiceView setTitle:@"松开 发送" forState:UIControlStateHighlighted];
+        [_voiceView setBackgroundImage:[[UIImage imageNamed:@"chatBar_recordSelectedBg"] stretchableImageWithLeftCapWidth:10 topCapHeight:10] forState:UIControlStateHighlighted];
+        [_voiceView addTarget:self action:@selector(voiceButtonTouchDown) forControlEvents:UIControlEventTouchDown];
+        [_voiceView addTarget:self action:@selector(voiceButtonTouchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
+        [_voiceView addTarget:self action:@selector(voiceButtonTouchUpInside) forControlEvents:UIControlEventTouchUpInside];
+        [_voiceView addTarget:self action:@selector(voiceDragOutside) forControlEvents:UIControlEventTouchDragExit];
+        [_voiceView addTarget:self action:@selector(voiceDragInside) forControlEvents:UIControlEventTouchDragEnter];
         
-        self.voiceView.backgroundColor = MTColor(243, 243, 243);
-        self.voiceView.layer.borderColor = MTColor(210, 210, 210).CGColor;
-        self.voiceView.layer.borderWidth = 0.5;
-        self.voiceView.layer.cornerRadius = 3;
+        [_voiceView setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        [_voiceView setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+        
+        _voiceView.backgroundColor = MTColor(243, 243, 243);
+        _voiceView.layer.borderColor = MTColor(210, 210, 210).CGColor;
+        _voiceView.layer.borderWidth = 0.5;
+        _voiceView.layer.cornerRadius = 3;
+        [self addSubview:_voiceView];
         _keyboardHeight = 0;
     }
     return _voiceView;
@@ -134,6 +161,7 @@
 
 -(void)initView
 {
+    _buttonArr = [[NSMutableArray alloc] init];
     self.backgroundColor = MTColor(243, 243, 243);
     
     if (!self.textViewMaxLine || self.textViewMaxLine == 0) {
@@ -147,6 +175,55 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHidden:) name:UIKeyboardWillHideNotification object:nil];
 }
+
+/**
+ 初始化UI
+ */
+-(void)setupSubviews
+{
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.width, 0.5)];
+    line.backgroundColor = MTColor(220, 220, 220);
+    [self addSubview:line];
+    
+    self.voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(5, self.height - kButtonWH - kButtonMargin, kButtonWH, kButtonWH)];
+    [self.voiceButton setImage:[UIImage imageNamed:@"liaotian_ic_yuyin_nor"] forState:UIControlStateNormal];
+    [self.voiceButton setImage:[UIImage imageNamed:@"liaotian_ic_press"] forState:UIControlStateHighlighted];
+    [self.voiceButton setImage:[UIImage imageNamed:@"liaotian_ic_jianpan_nor"] forState:UIControlStateSelected];
+    
+    [self.voiceButton addTarget:self action:@selector(voiceButtonclickHandler:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.voiceButton];
+    [_buttonArr addObject:self.voiceButton];
+    
+    self.textInput = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, self.height - kButtonWH - kButtonMargin, MTScreenW - 115, 32)];
+    self.textInput.font = [UIFont systemFontOfSize:17];
+    self.textInput.layer.cornerRadius = 3;
+    self.textInput.layer.borderColor = MTColor(210, 210, 210).CGColor;
+    self.textInput.layer.borderWidth = 0.5;
+    self.textInput.layer.masksToBounds = YES;
+    self.textInput.returnKeyType = UIReturnKeySend;
+    self.textInput.enablesReturnKeyAutomatically = YES;
+    self.textInput.delegate = self;
+    [self addSubview:self.textInput];
+    
+    self.emojiButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.textInput.frame) + 5, self.height - kButtonWH - kButtonMargin, kButtonWH, kButtonWH)];
+    [self.emojiButton setImage:[UIImage imageNamed:@"liaotian_ic_biaoqing_nor"] forState:UIControlStateNormal];
+    [self.emojiButton setImage:[UIImage imageNamed:@"liaotian_ic_biaoqing_press"] forState:UIControlStateHighlighted];
+    [self.emojiButton setImage:[UIImage imageNamed:@"liaotian_ic_jianpan_nor"] forState:UIControlStateSelected];
+    [self.emojiButton addTarget:self action:@selector(emojiButtonclickHandler:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.emojiButton];
+    [_buttonArr addObject:self.emojiButton];
+    
+    self.moreButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.emojiButton.frame) + 5, self.height - kButtonWH - kButtonMargin, kButtonWH, kButtonWH)];
+    [self.moreButton setImage:[UIImage imageNamed:@"liaotian_ic_gengduo_nor"] forState:UIControlStateNormal];
+    [self.moreButton setImage:[UIImage imageNamed:@"liaotian_ic_gengduo_press"] forState:UIControlStateHighlighted];
+    [self.moreButton setImage:[UIImage imageNamed:@"liaotian_ic_jianpan_nor"] forState:UIControlStateSelected];
+    [self.moreButton addTarget:self action:@selector(moreButtonclickHandler:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.moreButton];
+    [_buttonArr addObject:self.moreButton];
+    
+}
+
+#pragma mark keyboardnotification
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
@@ -176,49 +253,6 @@
     //    [self setShowKeyboardButton:NO];
 }
 
-/**
- 初始化UI
- */
--(void)setupSubviews
-{
-    self.voiceButton = [[UIButton alloc] initWithFrame:CGRectMake(5, 9, 30, 30)];
-    [self.voiceButton setImage:[UIImage imageNamed:@"liaotian_ic_yuyin_nor"] forState:UIControlStateNormal];
-    [self.voiceButton setImage:[UIImage imageNamed:@"liaotian_ic_press"] forState:UIControlStateHighlighted];
-    [self.voiceButton addTarget:self action:@selector(voiceButtonclickHandler) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.voiceButton];
-    
-    self.textInput = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, 7, MTScreenW - 115, 32)];
-    self.textInput.font = [UIFont systemFontOfSize:18];
-    
-    self.textInput.userInteractionEnabled = YES;
-    //单击手势
-    UITapGestureRecognizer *singleGestur = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleClick)];
-    singleGestur.numberOfTouchesRequired = 1;
-    singleGestur.numberOfTapsRequired = 1;
-    [self.textInput addGestureRecognizer:singleGestur];
-    
-    self.textInput.layer.cornerRadius = 3;
-    self.textInput.layer.borderColor = MTColor(210, 210, 210).CGColor;
-    self.textInput.layer.borderWidth = 0.5;
-    self.textInput.layer.masksToBounds = YES;
-    self.textInput.returnKeyType = UIReturnKeySend;
-    self.textInput.enablesReturnKeyAutomatically = YES;
-    self.textInput.delegate = self;
-    [self addSubview:self.textInput];
-    
-    self.emojiButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.textInput.frame) + 5, 9, 30, 30)];
-    [self.emojiButton setImage:[UIImage imageNamed:@"liaotian_ic_biaoqing_nor"] forState:UIControlStateNormal];
-    [self.emojiButton setImage:[UIImage imageNamed:@"liaotian_ic_biaoqing_press"] forState:UIControlStateHighlighted];
-    [self.emojiButton addTarget:self action:@selector(emojiButtonclickHandler) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.emojiButton];
-    
-    self.moreButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.emojiButton.frame) + 5, 9, 30, 30)];
-    [self.moreButton setImage:[UIImage imageNamed:@"liaotian_ic_gengduo_nor"] forState:UIControlStateNormal];
-    [self.moreButton setImage:[UIImage imageNamed:@"liaotian_ic_gengduo_press"] forState:UIControlStateHighlighted];
-    [self.moreButton addTarget:self action:@selector(moreButtonclickHandler) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.moreButton];
-}
-
 #pragma mark UITextViewDelegate
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -246,39 +280,73 @@
         self.height = _textInputHeight + 15;
         [UIView commitAnimations];
     }
-    self.voiceButton.y = self.emojiButton.y = self.moreButton.y = self.height - self.voiceButton.height - 12;
+    self.voiceButton.y = self.emojiButton.y = self.moreButton.y = self.height - self.voiceButton.height - kButtonMargin;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
-       return YES;
+    if ([text isEqualToString:@"\n"]){
+        self.textInput.attributedText = nil;
+        [self.textInput.delegate textViewDidChange:self.textInput];
+        NSLog(@"send。。。。。。");
+        return NO;
+    }
+    
+    return YES;
 }
-
 
 #pragma mark clickHandler
 
--(void)voiceButtonclickHandler
+-(void)voiceButtonclickHandler:(UIButton*)sender
 {
-    //    [self.textInput removeFromSuperview];
-    //    [self addSubview:self.voiceView];
-    [self switchToKeyboard:[UIView new]];
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    if (button.selected) {
+        [self switchToKeyboard:[UIView new]];
+    }
+    else{
+        self.textInput.inputView = nil;
+        [self.textInput endEditing:YES];
+        [self.textInput becomeFirstResponder];
+    }
+    
+    [self refleshButtonStatus:sender];
 }
 
--(void)emojiButtonclickHandler
+-(void)emojiButtonclickHandler:(UIButton*)sender
 {
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
     [self switchToKeyboard:self.emojiView];
+    [self refleshButtonStatus:sender];
 }
 
--(void)moreButtonclickHandler
+-(void)moreButtonclickHandler:(UIButton*)sender
 {
+    UIButton *button = (UIButton *)sender;
+    button.selected = !button.selected;
+    
     [self switchToKeyboard:self.moreView];
+    [self refleshButtonStatus:sender];
 }
 
--(void)singleClick
+-(void)refleshButtonStatus:(UIButton*)sender
 {
-//    self.textInput.inputView = nil;
-//    [self.textInput endEditing:YES];
-//    [self.textInput becomeFirstResponder];
+    for (UIButton *btn in self.buttonArr) {
+        if (btn != sender) {
+            btn.selected = NO;
+        }
+    }
+    
+    if (self.voiceButton.selected) {
+        [self.voiceView setHidden:NO];
+        [self.textInput setHidden:YES];
+    }
+    else{
+        [self.voiceView setHidden:YES];
+        [self.textInput setHidden:NO];
+    }
 }
 
 /**
@@ -301,6 +369,78 @@
     [self.textInput endEditing:YES];
     [self.textInput becomeFirstResponder];
 }
+
+#pragma mark 语音输入模块
+
+- (void)voiceButtonTouchDown
+{
+    recordStarttime = CFAbsoluteTimeGetCurrent();
+    
+    hud = [MBProgressHUD showHUDAddedTo:self.window animated:YES];
+    hud.mode = MBProgressHUDModeCustomView;
+    UIImage *image = [UIImage imageNamed:@"mic_0"];
+    hud.customView = [[UIImageView alloc] initWithImage:image];
+    hud.square = YES;
+    hud.contentColor = [UIColor whiteColor];
+
+    hud.bezelView.color = [UIColor colorWithRed:116/255 green:116/255 blue:116/255 alpha:0.66];
+    hud.bezelView.layer.cornerRadius = 8;
+    hud.label.text = @"手指上滑,取消发送";
+    
+    //录音
+    [MTRecordHelper shareRecordHelper].recordEndBlock = ^(NSData *data){
+        NSLog(@"录音完成");
+    };
+
+    [MTRecordHelper shareRecordHelper].recordingBlock = ^(float recordTime,float volume){
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"mic_%.0f.png",volume*10 > 5 ? 5 : volume*10]];
+        hud.customView = [[UIImageView alloc] initWithImage:image];
+
+        NSLog(@"正在录音");
+    };
+    
+    [[MTRecordHelper shareRecordHelper] startRecord];
+}
+
+- (void)voiceButtonTouchUpOutside
+{
+    [hud hideAnimated:YES];
+}
+
+- (void)voiceButtonTouchUpInside
+{
+    CFAbsoluteTime end  = CFAbsoluteTimeGetCurrent();
+    NSString *str = [NSString stringWithFormat:@"%0.3f", (end - recordStarttime)*1000];
+    if ([str floatValue] < 1000)
+    {
+        NSLog(@"录音时间太短");
+        hud.label.text = @"录音时间太短";
+        [hud hideAnimated:YES afterDelay:2.0f];
+    }
+    else
+    {
+        [hud hideAnimated:YES afterDelay:0.3f];
+    }
+    [[MTRecordHelper shareRecordHelper] stopRecord];
+}
+
+- (void)voiceDragOutside
+{
+    hud.label.backgroundColor = MTColor(158, 56, 54);
+    hud.label.layer.cornerRadius = 4;
+    hud.label.layer.masksToBounds = YES;
+    hud.label.text = @"松开手指,取消发送";
+    [[MTRecordHelper shareRecordHelper] stopRecord];
+}
+
+- (void)voiceDragInside
+{
+    hud.label.backgroundColor = [UIColor clearColor];
+    hud.label.text = @"手指上滑,取消发送";
+    [[MTRecordHelper shareRecordHelper] stopRecord];
+}
+
 
 #pragma mark EmojiViewDelegate
 
@@ -329,8 +469,12 @@
 
 - (void)emojiView:(MTEmojiView *)emojiView sendButtonClick:(UIButton *)sender
 {
+    self.textInput.attributedText = nil;
+    [self.textInput.delegate textViewDidChange:self.textInput];
     NSLog(@"send。。。。。。");
 }
+
+#pragma mark
 
 - (void)dealloc
 {
