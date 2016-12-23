@@ -16,6 +16,9 @@ MTMessageKeyBoard
 ### Category
 - `UIView+Extension`
 
+![image](https://github.com/MrTung/MTMessageKeyBoard/blob/master/MTMessageKeyBoardDemo/ScreenShots/2016-12-23%2012_00_53.gif?raw=true)
+
+
 MTMessageKeyBoard简介：
 app中需要用到聊天、咨询、发送文本信息等内容的时候可能需要用到的插件库。
 
