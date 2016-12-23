@@ -27,6 +27,7 @@
     
     MTInputToolbar *inputToolbar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 50 , MTScreenW, 50)];
     inputToolbar.delegate = self;
+    //文本输入框最大行数
     inputToolbar.textViewMaxLine = 4;
     [self.view addSubview:inputToolbar];
 }

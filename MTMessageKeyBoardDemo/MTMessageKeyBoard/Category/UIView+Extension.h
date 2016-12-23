@@ -1,10 +1,17 @@
 //
 //  UIView+Extension.h
-//  01-黑酷
 //
-//  Created by apple on 14-6-27.
-//  Copyright (c) 2014年 heima. All rights reserved.
 //
+//  Created by 董徐维  on 14-6-27.
+//  Copyright (c) 2014年 Mr.Tung. All rights reserved.
+//
+
+// 颜色
+#define MTColor(r, g, b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
+
+#define MTScreenW [UIScreen mainScreen].bounds.size.width
+
+#define MTScreenH [UIScreen mainScreen].bounds.size.height
 
 #import <UIKit/UIKit.h>
 

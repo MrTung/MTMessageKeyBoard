@@ -136,7 +136,6 @@
 		01948FA61E0A2A3D00C4D204 /* liaotian_ic_yuyin_nor@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948F2E1E0A2A3D00C4D204 /* liaotian_ic_yuyin_nor@3x.png */; };
 		01948FA71E0A2A3D00C4D204 /* mianView.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948F2F1E0A2A3D00C4D204 /* mianView.png */; };
 		01948FAB1E0A2A5600C4D204 /* MTInputToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FAA1E0A2A5600C4D204 /* MTInputToolbar.m */; };
-		01948FAE1E0A2E3C00C4D204 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FAD1E0A2E3C00C4D204 /* UIView+Extension.m */; };
 		01948FB11E0A49C700C4D204 /* MTEmojiView.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FB01E0A49C700C4D204 /* MTEmojiView.m */; };
 		01948FB51E0A4D3A00C4D204 /* EmojiCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FB41E0A4D3A00C4D204 /* EmojiCollectionViewCell.m */; };
 		01948FB81E0A4EC900C4D204 /* EmojiDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FB71E0A4EC900C4D204 /* EmojiDataHelper.m */; };
@@ -156,6 +155,8 @@
 		01948FF91E0BC23800C4D204 /* mic_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FF81E0BC23800C4D204 /* mic_5@2x.png */; };
 		01948FFE1E0CC4DB00C4D204 /* worning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FFD1E0CC4DB00C4D204 /* worning@2x.png */; };
 		019490001E0CC63000C4D204 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FFF1E0CC63000C4D204 /* cancel@2x.png */; };
+		01B0AF081E0CCE47007577F5 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0AF071E0CCE47007577F5 /* UIView+Extension.m */; };
+		01B0AF0C1E0CD912007577F5 /* 2016-12-23 12_00_53.gif in Resources */ = {isa = PBXBuildFile; fileRef = 01B0AF0B1E0CD912007577F5 /* 2016-12-23 12_00_53.gif */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -314,8 +315,6 @@
 		01948F2F1E0A2A3D00C4D204 /* mianView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mianView.png; sourceTree = "<group>"; };
 		01948FA91E0A2A5600C4D204 /* MTInputToolbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTInputToolbar.h; sourceTree = "<group>"; };
 		01948FAA1E0A2A5600C4D204 /* MTInputToolbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTInputToolbar.m; sourceTree = "<group>"; };
-		01948FAC1E0A2E3C00C4D204 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
-		01948FAD1E0A2E3C00C4D204 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		01948FAF1E0A49C700C4D204 /* MTEmojiView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTEmojiView.h; sourceTree = "<group>"; };
 		01948FB01E0A49C700C4D204 /* MTEmojiView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTEmojiView.m; sourceTree = "<group>"; };
 		01948FB31E0A4D3A00C4D204 /* EmojiCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmojiCollectionViewCell.h; sourceTree = "<group>"; };
@@ -344,6 +343,9 @@
 		01948FF81E0BC23800C4D204 /* mic_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_5@2x.png"; sourceTree = "<group>"; };
 		01948FFD1E0CC4DB00C4D204 /* worning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "worning@2x.png"; sourceTree = "<group>"; };
 		01948FFF1E0CC63000C4D204 /* cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@2x.png"; sourceTree = "<group>"; };
+		01B0AF061E0CCE47007577F5 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		01B0AF071E0CCE47007577F5 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		01B0AF0B1E0CD912007577F5 /* 2016-12-23 12_00_53.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "2016-12-23 12_00_53.gif"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -439,6 +441,7 @@
 		01948EAE1E0A261500C4D204 /* ScreenShots */ = {
 			isa = PBXGroup;
 			children = (
+				01B0AF0B1E0CD912007577F5 /* 2016-12-23 12_00_53.gif */,
 			);
 			path = ScreenShots;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 		01948EAF1E0A263D00C4D204 /* MTMessageKeyBoard */ = {
 			isa = PBXGroup;
 			children = (
+				01B0AF051E0CCE47007577F5 /* Category */,
 				01948FC71E0BA0CB00C4D204 /* MBProgressHUD */,
 				01948FA81E0A2A5600C4D204 /* Class */,
 				01948EB61E0A2A3C00C4D204 /* KerboardResource */,
@@ -595,8 +599,6 @@
 			isa = PBXGroup;
 			children = (
 				01948FF11E0BB90300C4D204 /* Record */,
-				01948FAC1E0A2E3C00C4D204 /* UIView+Extension.h */,
-				01948FAD1E0A2E3C00C4D204 /* UIView+Extension.m */,
 				01948FA91E0A2A5600C4D204 /* MTInputToolbar.h */,
 				01948FAA1E0A2A5600C4D204 /* MTInputToolbar.m */,
 				01948FAF1E0A49C700C4D204 /* MTEmojiView.h */,
@@ -648,6 +650,15 @@
 				01948FF51E0BB90300C4D204 /* Mp3Recorder.m */,
 			);
 			path = Record;
+			sourceTree = "<group>";
+		};
+		01B0AF051E0CCE47007577F5 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				01B0AF061E0CCE47007577F5 /* UIView+Extension.h */,
+				01B0AF071E0CCE47007577F5 /* UIView+Extension.m */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -786,6 +797,7 @@
 				01948FE21E0BA68E00C4D204 /* mic_1@2x.png in Resources */,
 				01948F5B1E0A2A3D00C4D204 /* emotion0040@2x.png in Resources */,
 				01948F891E0A2A3D00C4D204 /* emotion0086@2x.png in Resources */,
+				01B0AF0C1E0CD912007577F5 /* 2016-12-23 12_00_53.gif in Resources */,
 				01948F911E0A2A3D00C4D204 /* liaotian_ic_biaoqing_nor@3x.png in Resources */,
 				01948F471E0A2A3D00C4D204 /* emotion0020@2x.png in Resources */,
 				01948F821E0A2A3D00C4D204 /* emotion0079@2x.png in Resources */,
@@ -915,7 +927,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				01948FF71E0BB90300C4D204 /* Mp3Recorder.m in Sources */,
-				01948FAE1E0A2E3C00C4D204 /* UIView+Extension.m in Sources */,
 				01948E831E0A25F800C4D204 /* ViewController.m in Sources */,
 				01948FBB1E0A633200C4D204 /* MTMoreView.m in Sources */,
 				01948FB81E0A4EC900C4D204 /* EmojiDataHelper.m in Sources */,
@@ -924,6 +935,7 @@
 				01948FCA1E0BA0CB00C4D204 /* MBProgressHUD.m in Sources */,
 				01948FEA1E0BB1DA00C4D204 /* MTRecordHelper.m in Sources */,
 				01948E801E0A25F800C4D204 /* AppDelegate.m in Sources */,
+				01B0AF081E0CCE47007577F5 /* UIView+Extension.m in Sources */,
 				01948FAB1E0A2A5600C4D204 /* MTInputToolbar.m in Sources */,
 				01948E7D1E0A25F800C4D204 /* main.m in Sources */,
 				01948FBE1E0A648E00C4D204 /* MoreCollectionViewCell.m in Sources */,
@@ -1170,6 +1182,7 @@
 				01948EA71E0A25F800C4D204 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01948EA81E0A25F800C4D204 /* Build configuration list for PBXNativeTarget "MTMessageKeyBoardDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -1178,6 +1191,7 @@
 				01948EAA1E0A25F800C4D204 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01948EAB1E0A25F800C4D204 /* Build configuration list for PBXNativeTarget "MTMessageKeyBoardDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -1186,6 +1200,7 @@
 				01948EAD1E0A25F800C4D204 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
