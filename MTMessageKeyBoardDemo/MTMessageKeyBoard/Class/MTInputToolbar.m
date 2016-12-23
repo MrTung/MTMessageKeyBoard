@@ -24,9 +24,11 @@ typedef enum {
 #define kCustomKeyboardHeight 200
 
 //按钮距离下边距离
-#define kButtonMargin 12
+#define kButtonMargin 10
 //按钮宽高
 #define kButtonWH 30
+//输入框高度
+#define kInputHeight 37
 
 #import "MTInputToolbar.h"
 
@@ -43,6 +45,8 @@ typedef enum {
     CFAbsoluteTime recordStarttime;
     
     MBProgressHUD *hud;
+    
+    NSAttributedString *contentStr;
 }
 
 /***键盘高度***/
@@ -98,6 +102,15 @@ typedef enum {
     if (!_moreView) {
         _moreView = [[MTMoreView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
         _keyboardHeight = kCustomKeyboardHeight;
+        
+        __weak __typeof(id)weakdelegate = _delegate;
+        __weak __typeof(self)weakSelf = self;
+        
+        _moreView.didSelectItemAtIndexPath = ^(NSIndexPath *indexPath){
+            if ([weakdelegate respondsToSelector:@selector(inputToolbar:indexPath:)]) {
+                [weakdelegate inputToolbar:weakSelf indexPath:indexPath];
+            }
+        };
     }
     return _moreView;
 }
@@ -115,7 +128,7 @@ typedef enum {
 - (UIButton *)voiceView
 {
     if (!_voiceView) {
-        _voiceView = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, 7, MTScreenW - 115, 34)];
+        _voiceView = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, 7, MTScreenW - 115, kInputHeight)];
         _voiceView.titleLabel.font = [UIFont boldSystemFontOfSize:16];
         [_voiceView setTitle:@"按住 说话" forState:UIControlStateNormal];
         [_voiceView setTitle:@"松开 发送" forState:UIControlStateHighlighted];
@@ -134,7 +147,8 @@ typedef enum {
         _voiceView.layer.borderWidth = 0.5;
         _voiceView.layer.cornerRadius = 3;
         [self addSubview:_voiceView];
-        _keyboardHeight = 0;
+        if (self.voiceButton.selected)
+            _keyboardHeight = 0;
     }
     return _voiceView;
 }
@@ -194,7 +208,7 @@ typedef enum {
     [self addSubview:self.voiceButton];
     [_buttonArr addObject:self.voiceButton];
     
-    self.textInput = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, self.height - kButtonWH - kButtonMargin, MTScreenW - 115, 32)];
+    self.textInput = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.voiceButton.frame) + 5, (self.height - kInputHeight)/2, MTScreenW - 115, 37)];
     self.textInput.font = [UIFont systemFontOfSize:17];
     self.textInput.layer.cornerRadius = 3;
     self.textInput.layer.borderColor = MTColor(210, 210, 210).CGColor;
@@ -257,26 +271,29 @@ typedef enum {
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if (!self.voiceButton.selected) {
+        // 保存文本内容
+        contentStr = textView.attributedText;
+    }
+    
     _textInputHeight = ceilf([self.textInput sizeThatFits:CGSizeMake(self.textInput.width, MAXFLOAT)].height);
     self.textInput.scrollEnabled = _textInputHeight > _textInputMaxHeight && _textInputMaxHeight > 0;
     if (self.textInput.scrollEnabled) {
-        self.textInput.height = 5 + _textInputMaxHeight;
-        self.y = MTScreenH - _keyboardHeight - _textInputMaxHeight - 5 - 8;
-        
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationDuration:0.3];
         [UIView setAnimationCurve:7];
+        self.textInput.height = 5 + _textInputMaxHeight;
+        self.y = MTScreenH - _keyboardHeight - _textInputMaxHeight - 5 - 8;
         self.height = _textInputMaxHeight + 15;
         [UIView commitAnimations];
     } else {
-        self.textInput.height = _textInputHeight;
-        self.y = MTScreenH - _keyboardHeight - _textInputHeight - 5 - 8;
-        
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationBeginsFromCurrentState:YES];
         [UIView setAnimationDuration:0.3];
         [UIView setAnimationCurve:7];
+        self.textInput.height = _textInputHeight;
+        self.y = MTScreenH - _keyboardHeight - _textInputHeight - 5 - 8;
         self.height = _textInputHeight + 15;
         [UIView commitAnimations];
     }
@@ -286,9 +303,13 @@ typedef enum {
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]){
+        
+        if ([_delegate respondsToSelector:@selector(inputToolbar:sendContent:)]) {
+            [_delegate inputToolbar:self sendContent:self.textInput.attributedText];
+        }
+        
         self.textInput.attributedText = nil;
         [self.textInput.delegate textViewDidChange:self.textInput];
-        NSLog(@"send。。。。。。");
         return NO;
     }
     
@@ -302,12 +323,20 @@ typedef enum {
     UIButton *button = (UIButton *)sender;
     button.selected = !button.selected;
     if (button.selected) {
+        //置空文本框
+        self.textInput.attributedText = nil;
+        [self.textInput.delegate textViewDidChange:self.textInput];
+        
         [self switchToKeyboard:[UIView new]];
     }
     else{
         self.textInput.inputView = nil;
         [self.textInput endEditing:YES];
         [self.textInput becomeFirstResponder];
+        
+        //恢复文本框
+        self.textInput.attributedText = contentStr;
+        [self.textInput.delegate textViewDidChange:self.textInput];
     }
     
     [self refleshButtonStatus:sender];
@@ -320,6 +349,11 @@ typedef enum {
     
     [self switchToKeyboard:self.emojiView];
     [self refleshButtonStatus:sender];
+    
+    if (contentStr) {
+        self.textInput.attributedText = contentStr;
+        [self.textInput.delegate textViewDidChange:self.textInput];
+    }
 }
 
 -(void)moreButtonclickHandler:(UIButton*)sender
@@ -329,6 +363,11 @@ typedef enum {
     
     [self switchToKeyboard:self.moreView];
     [self refleshButtonStatus:sender];
+    
+    if (contentStr) {
+        self.textInput.attributedText = contentStr;
+        [self.textInput.delegate textViewDidChange:self.textInput];
+    }
 }
 
 -(void)refleshButtonStatus:(UIButton*)sender
@@ -382,21 +421,24 @@ typedef enum {
     hud.customView = [[UIImageView alloc] initWithImage:image];
     hud.square = YES;
     hud.contentColor = [UIColor whiteColor];
-
+    
     hud.bezelView.color = [UIColor colorWithRed:116/255 green:116/255 blue:116/255 alpha:0.66];
     hud.bezelView.layer.cornerRadius = 8;
     hud.label.text = @"手指上滑,取消发送";
-    
     //录音
     [MTRecordHelper shareRecordHelper].recordEndBlock = ^(NSData *data){
         NSLog(@"录音完成");
+        
+        if ([_delegate respondsToSelector:@selector(inputToolbar:sendRecordData:)]) {
+            [_delegate inputToolbar:self sendRecordData:data];
+        }
     };
-
+    
     [MTRecordHelper shareRecordHelper].recordingBlock = ^(float recordTime,float volume){
         
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"mic_%.0f.png",volume*10 > 5 ? 5 : volume*10]];
         hud.customView = [[UIImageView alloc] initWithImage:image];
-
+        
         NSLog(@"正在录音");
     };
     
@@ -415,7 +457,8 @@ typedef enum {
     if ([str floatValue] < 1000)
     {
         NSLog(@"录音时间太短");
-        hud.label.text = @"录音时间太短";
+        hud.label.text = @"说话时间太短";
+        hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"worning.png"]];
         [hud hideAnimated:YES afterDelay:2.0f];
     }
     else
@@ -431,6 +474,7 @@ typedef enum {
     hud.label.layer.cornerRadius = 4;
     hud.label.layer.masksToBounds = YES;
     hud.label.text = @"松开手指,取消发送";
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cancel.png"]];
     [[MTRecordHelper shareRecordHelper] stopRecord];
 }
 
@@ -438,6 +482,7 @@ typedef enum {
 {
     hud.label.backgroundColor = [UIColor clearColor];
     hud.label.text = @"手指上滑,取消发送";
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mic_0.png"]];
     [[MTRecordHelper shareRecordHelper] stopRecord];
 }
 
@@ -469,9 +514,13 @@ typedef enum {
 
 - (void)emojiView:(MTEmojiView *)emojiView sendButtonClick:(UIButton *)sender
 {
+    
+    if ([_delegate respondsToSelector:@selector(inputToolbar:sendContent:)]) {
+        [_delegate inputToolbar:self sendContent:self.textInput.attributedText];
+    }
+    
     self.textInput.attributedText = nil;
     [self.textInput.delegate textViewDidChange:self.textInput];
-    NSLog(@"send。。。。。。");
 }
 
 #pragma mark

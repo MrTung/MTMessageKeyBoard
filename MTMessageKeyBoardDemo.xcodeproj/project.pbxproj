@@ -150,11 +150,12 @@
 		01948FE31E0BA68E00C4D204 /* mic_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FDC1E0BA68E00C4D204 /* mic_2@2x.png */; };
 		01948FE41E0BA68E00C4D204 /* mic_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FDD1E0BA68E00C4D204 /* mic_3@2x.png */; };
 		01948FE51E0BA68E00C4D204 /* mic_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FDE1E0BA68E00C4D204 /* mic_4@2x.png */; };
-		01948FE71E0BA68E00C4D204 /* mic_cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FE01E0BA68E00C4D204 /* mic_cancel.png */; };
 		01948FEA1E0BB1DA00C4D204 /* MTRecordHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FE91E0BB1DA00C4D204 /* MTRecordHelper.m */; };
 		01948FF61E0BB90300C4D204 /* libmp3lame.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01948FF31E0BB90300C4D204 /* libmp3lame.a */; };
 		01948FF71E0BB90300C4D204 /* Mp3Recorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 01948FF51E0BB90300C4D204 /* Mp3Recorder.m */; };
 		01948FF91E0BC23800C4D204 /* mic_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FF81E0BC23800C4D204 /* mic_5@2x.png */; };
+		01948FFE1E0CC4DB00C4D204 /* worning@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FFD1E0CC4DB00C4D204 /* worning@2x.png */; };
+		019490001E0CC63000C4D204 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FFF1E0CC63000C4D204 /* cancel@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -334,7 +335,6 @@
 		01948FDC1E0BA68E00C4D204 /* mic_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_2@2x.png"; sourceTree = "<group>"; };
 		01948FDD1E0BA68E00C4D204 /* mic_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_3@2x.png"; sourceTree = "<group>"; };
 		01948FDE1E0BA68E00C4D204 /* mic_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_4@2x.png"; sourceTree = "<group>"; };
-		01948FE01E0BA68E00C4D204 /* mic_cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mic_cancel.png; sourceTree = "<group>"; };
 		01948FE81E0BB1DA00C4D204 /* MTRecordHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTRecordHelper.h; sourceTree = "<group>"; };
 		01948FE91E0BB1DA00C4D204 /* MTRecordHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTRecordHelper.m; sourceTree = "<group>"; };
 		01948FF21E0BB90300C4D204 /* lame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lame.h; sourceTree = "<group>"; };
@@ -342,6 +342,8 @@
 		01948FF41E0BB90300C4D204 /* Mp3Recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3Recorder.h; sourceTree = "<group>"; };
 		01948FF51E0BB90300C4D204 /* Mp3Recorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3Recorder.m; sourceTree = "<group>"; };
 		01948FF81E0BC23800C4D204 /* mic_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_5@2x.png"; sourceTree = "<group>"; };
+		01948FFD1E0CC4DB00C4D204 /* worning@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "worning@2x.png"; sourceTree = "<group>"; };
+		01948FFF1E0CC63000C4D204 /* cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cancel@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -625,13 +627,14 @@
 		01948FCB1E0BA62D00C4D204 /* imgs */ = {
 			isa = PBXGroup;
 			children = (
+				01948FFF1E0CC63000C4D204 /* cancel@2x.png */,
+				01948FFD1E0CC4DB00C4D204 /* worning@2x.png */,
 				01948FF81E0BC23800C4D204 /* mic_5@2x.png */,
 				01948FDA1E0BA68E00C4D204 /* mic_0@2x.png */,
 				01948FDB1E0BA68E00C4D204 /* mic_1@2x.png */,
 				01948FDC1E0BA68E00C4D204 /* mic_2@2x.png */,
 				01948FDD1E0BA68E00C4D204 /* mic_3@2x.png */,
 				01948FDE1E0BA68E00C4D204 /* mic_4@2x.png */,
-				01948FE01E0BA68E00C4D204 /* mic_cancel.png */,
 			);
 			path = imgs;
 			sourceTree = "<group>";
@@ -827,9 +830,9 @@
 				01948F611E0A2A3D00C4D204 /* emotion0046@2x.png in Resources */,
 				01948F571E0A2A3D00C4D204 /* emotion0036@2x.png in Resources */,
 				01948E8B1E0A25F800C4D204 /* LaunchScreen.storyboard in Resources */,
-				01948FE71E0BA68E00C4D204 /* mic_cancel.png in Resources */,
 				01948F991E0A2A3D00C4D204 /* liaotian_ic_gengduo_press@2x.png in Resources */,
 				01948F461E0A2A3D00C4D204 /* emotion0019@2x.png in Resources */,
+				019490001E0CC63000C4D204 /* cancel@2x.png in Resources */,
 				01948F3D1E0A2A3D00C4D204 /* emotion0010@2x.png in Resources */,
 				01948F511E0A2A3D00C4D204 /* emotion0030@2x.png in Resources */,
 				01948F851E0A2A3D00C4D204 /* emotion0082@2x.png in Resources */,
@@ -871,6 +874,7 @@
 				01948F841E0A2A3D00C4D204 /* emotion0081@2x.png in Resources */,
 				01948F981E0A2A3D00C4D204 /* liaotian_ic_gengduo_press.png in Resources */,
 				01948F6C1E0A2A3D00C4D204 /* emotion0057@2x.png in Resources */,
+				01948FFE1E0CC4DB00C4D204 /* worning@2x.png in Resources */,
 				01948F331E0A2A3D00C4D204 /* chat_ic_delete_press@3x.png in Resources */,
 				01948E861E0A25F800C4D204 /* Main.storyboard in Resources */,
 				01948F351E0A2A3D00C4D204 /* emotion0002@2x.png in Resources */,

@@ -112,12 +112,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSObject *str = self.defaultEmoticons[indexPath.row];
-    //    if (str) {
-    //        if ([_delegate respondsToSelector:@selector(emojiView:emojiText:)]) {
-    //            [_delegate emojiView:self emojiText:str];
-    //        }
-    //    }
+    if(self.didSelectItemAtIndexPath)
+        self.didSelectItemAtIndexPath(indexPath);
 }
 
 @end

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[MTEmojiView collectionView:numberOfItemsInSection:]:MTEmojiView.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MTRecordHelper recording:volume:]:MTRecordHelper.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MTInputToolbar textViewDidChange:]:MTInputToolbar.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.textInput.y">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

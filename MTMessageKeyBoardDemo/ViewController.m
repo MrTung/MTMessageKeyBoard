@@ -15,26 +15,38 @@
 
 #import "MTInputToolbar.h"
 
-@interface ViewController ()
+@interface ViewController ()<MTInputToolbarDelegate>
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
     
-    MTInputToolbar *bar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 50 , MTScreenW, 50)];
-    bar.textViewMaxLine = 4;
-    [self.view addSubview:bar];
+    MTInputToolbar *inputToolbar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 50 , MTScreenW, 50)];
+    inputToolbar.delegate = self;
+    inputToolbar.textViewMaxLine = 4;
+    [self.view addSubview:inputToolbar];
 }
 
+#pragma MTInputToolbarDelegate
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)inputToolbar:(MTInputToolbar *)inputToolbar sendContent:(NSAttributedString *)sendContent
+{
+    NSLog(@"%@",sendContent);
 }
 
+- (void)inputToolbar:(MTInputToolbar *)inputToolbar sendRecordData:(NSData *)Data
+{
+    NSLog(@"%@",Data);
+}
+
+- (void)inputToolbar:(MTInputToolbar *)inputToolbar indexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%@",indexPath);
+
+}
 
 @end

@@ -10,4 +10,6 @@
 
 @interface MTMoreView : UIView
 
+@property (nonatomic, copy) void (^didSelectItemAtIndexPath)(NSIndexPath *indexPath);
+
 @end
