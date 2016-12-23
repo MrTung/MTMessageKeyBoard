@@ -14,7 +14,9 @@ typedef enum {
     InputToolBarStatusTypeMore,
 } InputToolBarStatusType;
 
-#define kCustomKeyboardHeight 200
+#define kCustomKeyboardHeight MTScreenH*0.3
+
+#define kEmojiKeyboardHeight 200
 
 //按钮距离下边距离
 #define kButtonMargin 10
@@ -111,9 +113,9 @@ typedef enum {
 - (MTEmojiView *)emojiView
 {
     if (!_emojiView) {
-        _emojiView = [[MTEmojiView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
+        _emojiView = [[MTEmojiView alloc] initWithFrame:CGRectMake(0, 0, self.width, kEmojiKeyboardHeight)];
         _emojiView.delegate = self;
-        _keyboardHeight = kCustomKeyboardHeight;
+        _keyboardHeight = kEmojiKeyboardHeight;
     }
     return _emojiView;
 }

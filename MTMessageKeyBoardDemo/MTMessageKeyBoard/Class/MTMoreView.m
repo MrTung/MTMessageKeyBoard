@@ -57,7 +57,7 @@
 
 -(void)setupSubviews
 {
-    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, MTScreenW, self.height - 30) collectionViewLayout:self.layout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, MTScreenW, self.height) collectionViewLayout:self.layout];
     self.collectionView.showsHorizontalScrollIndicator = NO;
     self.collectionView.pagingEnabled = YES;
     self.collectionView.backgroundColor = [UIColor colorWithRed:243 / 255.0 green:243 / 255.0 blue:243 / 255.0 alpha:1];
@@ -79,7 +79,7 @@
 #pragma mark UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-     self.pageControl.currentPage = ((scrollView.contentOffset.x - MTScreenW * (self.dataProvider.count / 8)) / MTScreenW);
+    self.pageControl.currentPage = ((scrollView.contentOffset.x - MTScreenW * (self.dataProvider.count / 8)) / MTScreenW);
 }
 
 #pragma mark UICollectionViewDelegate
@@ -108,6 +108,11 @@
     CGFloat H = (self.collectionView.bounds.size.height) / 2;
     
     return CGSizeMake(W, H);
+}
+
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

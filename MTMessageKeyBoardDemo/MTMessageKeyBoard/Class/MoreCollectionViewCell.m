@@ -8,8 +8,10 @@
 
 #import "MoreCollectionViewCell.h"
 
+#define kImagePadding 20
+
 @interface MoreCollectionViewCell ()
-@property (nonatomic,strong)UIButton *button;
+@property (nonatomic,strong)UIImageView *imageView;
 @property (nonatomic,strong)UILabel *label;
 
 @end
@@ -26,16 +28,14 @@
 
 - (void)setupUI
 {
-    self.button = [[UIButton alloc] init];
-    self.button.frame = CGRectMake(0, -20, self.frame.size.width,  self.frame.size.width);
-
+    self.imageView = [[UIImageView alloc] init];
+    self.imageView.frame = CGRectMake(kImagePadding, 10, self.frame.size.width - kImagePadding *2,  self.frame.size.width - kImagePadding *2);
     self.label = [[UILabel alloc] init];
     self.label.textAlignment = NSTextAlignmentCenter;
     self.label.font = [UIFont systemFontOfSize:12];
-    self.label.frame = CGRectMake(0, CGRectGetMaxY(self.button.frame) - 20, self.frame.size.width, 15);
+    self.label.frame = CGRectMake(0, CGRectGetMaxY(self.imageView.frame) + 5, self.frame.size.width, 15);
 
-    self.button.userInteractionEnabled = false;
-    [self addSubview:self.button];
+    [self addSubview:self.imageView];
     [self addSubview:self.label];
 }
 
@@ -46,8 +46,7 @@
 
 - (void)setImage:(UIImage *)image
 {
-    [self.button setImage:image forState:UIControlStateNormal];
-    [self.button setImage:image forState:UIControlStateHighlighted];
+    self.imageView.image = image;
 }
 
 @end
