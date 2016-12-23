@@ -21,7 +21,7 @@ app中需要用到聊天、咨询、发送文本信息等内容的时候可能�
 
 ###用法：
 
-## <a id="Details"></a>Details (See the example program PYSearchExample for details)
+## <a id="Details"></a>Details (See the example program MTMessageKeyBoardDemo for details)
 ```objc
 #import "MTInputToolbar.h"
 
