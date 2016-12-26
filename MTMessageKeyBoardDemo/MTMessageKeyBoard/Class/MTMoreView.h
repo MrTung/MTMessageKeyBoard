@@ -12,4 +12,7 @@
 
 @property (nonatomic, copy) void (^didSelectItemAtIndexPath)(NSIndexPath *indexPath);
 
+@property (nonatomic, strong)NSArray <NSDictionary<NSString *,NSString*> *> *dataProvider;
+
+
 @end

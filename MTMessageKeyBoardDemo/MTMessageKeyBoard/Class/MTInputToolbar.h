@@ -33,6 +33,11 @@
  */
 @property (nonatomic,assign)NSInteger textViewMaxLine;
 
+/**
+ *  设置更多界面的数据源(格式为:字典数组。包含2个字段：@image , @label)
+ */
+@property (strong, nonatomic)NSArray <NSDictionary<NSString *,NSString*> *> *typeDatas;
+
 @property (nonatomic,weak) id<MTInputToolbarDelegate>delegate;
 
 @end

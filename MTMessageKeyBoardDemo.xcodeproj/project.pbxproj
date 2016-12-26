@@ -157,6 +157,7 @@
 		019490001E0CC63000C4D204 /* cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01948FFF1E0CC63000C4D204 /* cancel@2x.png */; };
 		01B0AF081E0CCE47007577F5 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0AF071E0CCE47007577F5 /* UIView+Extension.m */; };
 		01B0AF0C1E0CD912007577F5 /* 2016-12-23 12_00_53.gif in Resources */ = {isa = PBXBuildFile; fileRef = 01B0AF0B1E0CD912007577F5 /* 2016-12-23 12_00_53.gif */; };
+		01B0AF141E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h.m in Sources */ = {isa = PBXBuildFile; fileRef = 01B0AF131E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -346,6 +347,8 @@
 		01B0AF061E0CCE47007577F5 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
 		01B0AF071E0CCE47007577F5 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
 		01B0AF0B1E0CD912007577F5 /* 2016-12-23 12_00_53.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "2016-12-23 12_00_53.gif"; sourceTree = "<group>"; };
+		01B0AF121E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MTCollectionViewHorizontalLayout.h; sourceTree = "<group>"; };
+		01B0AF131E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MTCollectionViewHorizontalLayout.h.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -598,6 +601,8 @@
 		01948FA81E0A2A5600C4D204 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				01B0AF121E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h */,
+				01B0AF131E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h.m */,
 				01948FF11E0BB90300C4D204 /* Record */,
 				01948FA91E0A2A5600C4D204 /* MTInputToolbar.h */,
 				01948FAA1E0A2A5600C4D204 /* MTInputToolbar.m */,
@@ -930,6 +935,7 @@
 				01948E831E0A25F800C4D204 /* ViewController.m in Sources */,
 				01948FBB1E0A633200C4D204 /* MTMoreView.m in Sources */,
 				01948FB81E0A4EC900C4D204 /* EmojiDataHelper.m in Sources */,
+				01B0AF141E0D2829007577F5 /* MTCollectionViewHorizontalLayout.h.m in Sources */,
 				01948FB11E0A49C700C4D204 /* MTEmojiView.m in Sources */,
 				01948FB51E0A4D3A00C4D204 /* EmojiCollectionViewCell.m in Sources */,
 				01948FCA1E0BA0CB00C4D204 /* MBProgressHUD.m in Sources */,

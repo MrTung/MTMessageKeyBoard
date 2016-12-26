@@ -16,23 +16,26 @@
 #import "UIView+Extension.h"
 #import "MoreCollectionViewCell.h"
 
+#import"MTCollectionViewHorizontalLayout.h"
+
 @interface MTMoreView ()<UICollectionViewDataSource,UICollectionViewDelegate>
 
 @property (nonatomic,strong)UIPageControl *pageControl;
 
-@property (nonatomic,strong)NSArray *dataProvider;
-
 @property (nonatomic,strong)UICollectionView *collectionView;
 
-@property (nonatomic,strong)UICollectionViewFlowLayout *layout;
+@property (nonatomic,strong)MTCollectionViewHorizontalLayout *layout;
+
+@property(nonatomic, assign) NSUInteger pageCount;
+
 
 @end
 @implementation MTMoreView
 
--(UICollectionViewFlowLayout*)layout
+-(MTCollectionViewHorizontalLayout*)layout
 {
     if (!_layout)
-        _layout =[[UICollectionViewFlowLayout alloc]init];
+        _layout =[[MTCollectionViewHorizontalLayout alloc]init];
     
     _layout.collectionView.pagingEnabled = YES;
     _layout.minimumLineSpacing = 0;
@@ -53,6 +56,18 @@
         [self setupSubviews];
     }
     return self;
+}
+
+-(void)setDataProvider:(NSArray<NSDictionary<NSString *,NSString *> *> *)dataProvider
+{
+    _dataProvider = dataProvider;
+    
+    _pageCount = dataProvider.count;
+    
+    while (_pageCount % 8 != 0) {
+        ++_pageCount;
+    }
+    [self.collectionView reloadData];
 }
 
 -(void)setupSubviews
@@ -91,14 +106,22 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 8;
+    return _pageCount;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     MoreCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MTMoreCollectionViewCell" forIndexPath:indexPath];
-    cell.image = [UIImage imageNamed:@"img_defaulthead_nor"];
-    cell.string = @"照片";
+    if (indexPath.item >= _dataProvider.count - 1) {
+        cell.image = nil;
+        cell.string = @"";
+    }
+    else
+    {
+        NSDictionary *dict= _dataProvider[indexPath.item];
+        cell.image = [UIImage imageNamed:[dict objectForKey:@"image"]];
+        cell.string = [dict objectForKey:@"label"];
+    }
     return cell;
 }
 
@@ -117,7 +140,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(self.didSelectItemAtIndexPath)
+    if(self.didSelectItemAtIndexPath && indexPath.item < _dataProvider.count - 1)
         self.didSelectItemAtIndexPath(indexPath);
 }
 

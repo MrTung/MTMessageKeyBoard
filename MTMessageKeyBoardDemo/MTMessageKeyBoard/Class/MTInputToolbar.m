@@ -97,7 +97,7 @@ typedef enum {
     if (!_moreView) {
         _moreView = [[MTMoreView alloc] initWithFrame:CGRectMake(0, 0, self.width, kCustomKeyboardHeight)];
         _keyboardHeight = kCustomKeyboardHeight;
-        
+        _moreView.dataProvider = _typeDatas;
         __weak __typeof(id)weakdelegate = _delegate;
         __weak __typeof(self)weakSelf = self;
         
@@ -146,6 +146,11 @@ typedef enum {
             _keyboardHeight = 0;
     }
     return _voiceView;
+}
+
+-(void)setTypeDatas:(NSArray<NSDictionary<NSString *,NSString *> *> *)typeDatas
+{
+    _typeDatas = typeDatas;
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event

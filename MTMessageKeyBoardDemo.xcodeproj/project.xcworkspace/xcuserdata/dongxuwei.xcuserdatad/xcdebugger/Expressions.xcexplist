@@ -6,13 +6,21 @@
          contextName = "-[MTEmojiView collectionView:numberOfItemsInSection:]:MTEmojiView.m">
       </ContextState>
       <ContextState
-         contextName = "-[MTRecordHelper recording:volume:]:MTRecordHelper.m">
-      </ContextState>
-      <ContextState
          contextName = "-[MTInputToolbar textViewDidChange:]:MTInputToolbar.m">
          <PersistentStrings>
             <PersistentString
                value = "self.textInput.y">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[MTRecordHelper recording:volume:]:MTRecordHelper.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[MTMoreView collectionView:cellForItemAtIndexPath:]:MTMoreView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "indexPath.item">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
