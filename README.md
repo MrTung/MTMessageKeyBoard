@@ -40,6 +40,17 @@ app中需要用到聊天、咨询、发送文本信息等内容的时候可能�
     
     MTInputToolbar *inputToolbar = [[MTInputToolbar alloc] initWithFrame:CGRectMake(0,MTScreenH - 50 , MTScreenW, 50)];
     inputToolbar.delegate = self;
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    for (int i = 0; i<12; i ++ ) {
+        NSDictionary *dict = @{@"image":@"img_defaulthead_nor",
+                               @"label":[NSString stringWithFormat:@"%d",i],
+                               };
+        [arr addObject:dict];
+    }
+    inputToolbar.typeDatas = [arr copy];
+    
+    //文本输入框最大行数
     inputToolbar.textViewMaxLine = 4;
     [self.view addSubview:inputToolbar];
 }
